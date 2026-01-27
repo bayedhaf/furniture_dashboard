@@ -2,59 +2,51 @@
 
 import RequireRole from "@/components/RequireRole";
 import { useSession } from "next-auth/react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { items } from "@/lib/managers-sidebarlink";
 
 export default function ManagerDashboard() {
   const { data: session } = useSession();
   const name = session?.user?.name ?? session?.user?.email ?? "";
-  const locations = (session as typeof session & { locations?: string[] })?.locations || [];
+  const locations =
+    (session as typeof session & { locations?: string[] })?.locations || [];
 
   return (
     <RequireRole roles={["manager"]}>
-      <div className="min-h-screen bg-gray-50 p-6 md:p-10">
-        <div className="max-w-5xl mx-auto">
-          {/* Welcome Header */}
-          <header className="mb-8 text-center">
-            <h1 className="text-3xl font-extrabold mb-2">Manager Dashboard</h1>
-            <p className="text-gray-600">
-              Welcome, <span className="font-semibold">{name}</span>
-            </p>
-            <p className="text-gray-500 mt-1">
-              Assigned Locations: {locations.length ? locations.join(", ") : "None"}
-            </p>
-          </header>
+      <div className="min-h-screen bg-[#F8F9FA] p-6 md:p-10">
+        <div className="mx-auto max-w-6xl">
+        
+<header className="mb-12 flex justify-center">
+  <Card className="w-full max-w-3xl bg-white shadow-md border border-[#E1E4E8]">
+    <CardHeader className="text-center">
+      <CardTitle className="text-4xl font-extrabold text-[#1B3A57] mb-2">
+        Manager Dashboard
+      </CardTitle>
+      <CardDescription className="text-[#6C757D] mb-1">
+        Welcome, <span className="font-semibold">{name}</span>
+      </CardDescription>
+      <CardDescription className="text-[#6C757D]">
+        Assigned Locations: {locations.length ? locations.join(", ") : "None"}
+      </CardDescription>
+    </CardHeader>
+  </Card>
+</header>
 
-          {/* Dashboard Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Reports */}
-            <Card className="hover:shadow-lg transition">
-              <CardHeader>
-                <CardTitle>Reports</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>View and manage reports for your assigned locations.</p>
-              </CardContent>
-            </Card>
-
-            {/* Workers */}
-            <Card className="hover:shadow-lg transition">
-              <CardHeader>
-                <CardTitle>Workers</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>Manage workers under your supervision.</p>
-              </CardContent>
-            </Card>
-
-            {/* Operations */}
-            <Card className="hover:shadow-lg transition">
-              <CardHeader>
-                <CardTitle>Operations</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>Monitor operational activities for your assigned areas.</p>
-              </CardContent>
-            </Card>
+          {/* ================= Cards ================= */}
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map((item, i) => (
+              <Link key={i} href={item.url}>
+                <Card className="cursor-pointer bg-white hover:bg-[#007B7F]/10 transition-shadow hover:shadow-lg">
+                  <CardHeader>
+                    <CardTitle className="text-[#1B3A57]">{item.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-[#6C757D]">{item.description}</p>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
           </div>
         </div>
       </div>
