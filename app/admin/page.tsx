@@ -1,7 +1,12 @@
+
 import React from 'react'
 
-export default function AdminDashbord() {
+export default function AdminDahboard() {
   return (
-    <div>AdminDashbord</div>
+    <div>
+     <main className="">
+     
+     </main>
+    </div>
   )
 }

@@ -36,17 +36,47 @@ export async function POST(request: Request) {
   if (!isAdmin) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const body = await request.json();
-  const { email, password, name } = body || {};
-  if (!email || !password) {
-    return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
+  const { email, password, name, phone, locations } = body || {};
+  if (!email) {
+    return NextResponse.json({ error: "Email is required" }, { status: 400 });
+  }
+  const normalizedEmail = String(email).trim().toLowerCase();
+
+  // Reject duplicate emails (case-insensitive)
+  const escapeRegex = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const existing = await db
+    .collection("users")
+    .findOne({ email: { $regex: `^${escapeRegex(normalizedEmail)}$`, $options: "i" } });
+  if (existing) {
+    return NextResponse.json({ error: "Email already exists" }, { status: 409 });
   }
 
-  const hashed = await bcrypt.hash(password, 10);
-  await db.collection("users").updateOne(
-    { email },
-    { $setOnInsert: { email, password: hashed, role: "manager", name: name ?? email } },
-    { upsert: true }
-  );
+  // Build insert document
+  const doc: {
+    email: string;
+    role: string;
+    name: string;
+    phone?: string;
+    locations?: string[];
+    password?: string;
+  } = {
+    email: normalizedEmail,
+    role: "manager",
+    name: typeof name === "string" && name.trim() ? name.trim() : normalizedEmail,
+  };
+
+  if (typeof phone === "string" && phone.trim()) {
+    doc.phone = phone.trim();
+  }
+  if (Array.isArray(locations)) {
+    doc.locations = locations.filter((l: unknown) => typeof l === "string");
+  }
+  if (typeof password === "string" && password.length >= 6) {
+    const hashed = await bcrypt.hash(password, 10);
+    doc.password = hashed;
+  }
+
+  await db.collection("users").insertOne(doc);
 
   return NextResponse.json({ ok: true });
 }

@@ -1,0 +1,18 @@
+"use client";
+import React from "react";
+import { useAuth } from "@/context/AuthContext";
+
+type Props = {
+	roles: string[];
+	children: React.ReactNode;
+};
+
+export default function RequireRole({ roles, children }: Props) {
+	const { user } = useAuth();
+	if (!user) return <div className="p-4 text-red-600">Not authenticated.</div>;
+	if (!roles.includes(user.role)) {
+		return <div className="p-4 text-red-600">Forbidden: insufficient role.</div>;
+	}
+	return <>{children}</>;
+}
+
