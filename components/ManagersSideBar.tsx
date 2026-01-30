@@ -1,6 +1,7 @@
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -10,6 +11,9 @@ import {
 } from "@/components/ui/sidebar"
 import { items } from "@/lib/managers-sidebarlink"
 import Link from "next/link"
+import { LogoutButton } from "./LogoutButton"
+
+import { LogOut } from "lucide-react";
 
 export default function ManagersSideBar() {
   return (
@@ -45,6 +49,27 @@ export default function ManagersSideBar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+     <SidebarFooter className="border-t border-slate-200 bg-[#1B3A57] p-4">
+      <LogoutButton
+        redirectTo="/auth/login"
+        label={
+          <div className="flex items-center justify-center gap-2">
+            <LogOut size={18} className="text-red-400" />
+            <span className="text-red-400 font-medium text-sm">Logout</span>
+          </div>
+        }
+        className="
+          w-full
+          rounded-md
+          bg-transparent
+          px-4 py-2
+          hover:bg-red-500/10
+          focus:outline-none focus:ring-2 focus:ring-red-500/40
+          transition
+        "
+      />
+    </SidebarFooter>
+
     </Sidebar>
   )
 }

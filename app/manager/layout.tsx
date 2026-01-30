@@ -1,76 +1,36 @@
-import type { Metadata } from "next";
+"use client";
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import ManagersSideBar from "@/components/ManagersSideBar";
+import { LogoutButton } from "@/components/LogoutButton";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-export const metadata: Metadata = {
-  title: {
-    default: "Manager Dashboard | A.W.G Wandiye Furniture",
-    template: "%s | A.W.G Wandiye Furniture",
-  },
+export default function ManagerLayout({ children }: { children: React.ReactNode }) {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  
+  const name = session?.user?.name ?? session?.user?.email?.split('@')[0] ?? "Manager";
 
-  description:
-    "Manager dashboard for A.W.G Wandiye Furniture. Manage products, orders, customers, and operations for furniture services in Shashemene and Negele Arsi, Ethiopia.",
+  // Redirect unauthenticated users
+  useEffect(() => {
+    if (status === "unauthenticated") router.replace("/auth/login");
+  }, [status, router]);
 
-  keywords: [
-    "A.W.G Wandiye Furniture",
-    "Furniture Manager Dashboard",
-    "Ethiopian Furniture Company",
-    "Shashemene Furniture",
-    "Negele Arsi Furniture",
-    "Oromia Furniture",
-    "Furniture Management System",
-    "Admin Panel Furniture App",
-  ],
+  if (status === "loading") {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-neutral-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+          <p className="text-gray-500">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
 
-  authors: [{ name: "A.W.G Wandiye Furniture" }],
-  creator: "A.W.G Wandiye Furniture",
-  publisher: "A.W.G Wandiye Furniture",
+  if (!session) return null;
 
-  metadataBase: new URL("https://www.awgwandiyefurniture.com"),
-
-  alternates: {
-    canonical: "/admin",
-  },
-
-  openGraph: {
-    title: "A.W.G Wandiye Furniture Admin",
-    description:
-      "Administrative dashboard for managing furniture operations in Ethiopia.",
-    url: "https://www.awgwandiyefurniture.com/admin",
-    siteName: "A.W.G Wandiye Furniture",
-    locale: "en_ET",
-    type: "website",
-    images: [
-      {
-        url: "/og-admin.jpg",
-        width: 1200,
-        height: 630,
-        alt: "A.W.G Wandiye Furniture Admin Dashboard",
-      },
-    ],
-  },
-
-  twitter: {
-    card: "summary_large_image",
-    title: "A.W.G Wandiye Furniture Admin",
-    description: "Manage furniture products and operations.",
-    images: ["/og-admin.jpg"],
-  },
-
-  robots: {
-    index: false, // 👈 admin should NOT be indexed
-    follow: false,
-  },
-
-  category: "Business Software",
-};
-
-export default function ManagerLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
   return (
     <SidebarProvider>
       <div className="flex min-h-screen bg-neutral-50 text-neutral-900">
@@ -79,19 +39,47 @@ export default function ManagerLayout({
           <ManagersSideBar />
         </aside>
 
-        {/* Mobile Trigger */}
-        <div className="md:hidden fixed top-4 left-4 z-50">
-          <SidebarTrigger className="rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white shadow-lg hover:bg-indigo-700 transition">
-            Menu
-          </SidebarTrigger>
-        </div>
+        {/* Main area */}
+        <div className="flex-1 flex flex-col">
+          {/* Header */}
+          <header className="sticky top-0 z-50 w-full bg-white border-b border-neutral-200 shadow-sm px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 ">
+            <div className="flex items-center gap-3 sm:gap-4">
+              {/* Mobile sidebar trigger */}
+              <div className="md:hidden">
+                <SidebarTrigger 
+                  aria-label="Toggle menu"
+                  className="rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white shadow-lg hover:bg-indigo-700 transition"
+                >
+                  Menu
+                </SidebarTrigger>
+              </div>
+              
+              {/* Title + Welcome */}
+              <div>
+                <h1 className="text-xl sm:text-2xl font-bold text-[#1B3A57]">Manager Dashboard</h1>
+                <p className="text-sm text-neutral-500 mt-1">
+                  Welcome back, <span className="font-semibold text-neutral-700">{name}</span>
+                </p>
+              </div>
+            </div>
 
-        {/* Content */}
-        <main className="flex-1 p-6 md:p-10">
-          <div className="mx-auto max-w-7xl">
-            {children}
-          </div>
-        </main>
+            {/* Logout Button */}
+            <div className="sm:ml-auto mt-2 sm:mt-0">
+              <LogoutButton
+                label="Logout"
+                redirectTo="/auth/login"
+                variant="ghost"
+                size="sm"
+                className="text-red-600 hover:text-red-700 hover:bg-red-50 font-medium"
+              />
+            </div>
+          </header>
+
+          {/* Content */}
+          <main className="flex-1 p-4 sm:p-6 md:p-8">
+            <div className="mx-auto w-full max-w-7xl">{children}</div>
+          </main>
+        </div>
       </div>
     </SidebarProvider>
   );
