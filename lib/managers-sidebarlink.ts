@@ -35,7 +35,7 @@ export const items = [
   },
   {
     title: "Wages",
-    url: "/manager/wages",
+    url: "/manager/employeelist",
     description: "View and manage wage data",
     icon: Wallet,
   },
