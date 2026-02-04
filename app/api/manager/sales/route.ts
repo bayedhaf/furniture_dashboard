@@ -111,3 +111,25 @@ export async function PUT(request: Request) {
   if (!res.matchedCount) return NextResponse.json({ error: "Not found or forbidden" }, { status: 404 });
   return NextResponse.json({ ok: true });
 }
+
+export async function DELETE(request: Request) {
+  const session = await getServerSession(authConfig);
+  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get("id");
+  if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+
+  const client = await getMongoClient();
+  const db = client.db();
+
+  const filter: Record<string, unknown> = { _id: new ObjectId(String(id)) };
+  const role = session.role?.toString().toLowerCase();
+  if (role === "manager" && session.userId) {
+    filter.managerId = new ObjectId(String(session.userId));
+  }
+
+  const res = await db.collection("sales").deleteOne(filter);
+  if (!res.deletedCount) return NextResponse.json({ error: "Not found or forbidden" }, { status: 404 });
+  return NextResponse.json({ ok: true });
+}

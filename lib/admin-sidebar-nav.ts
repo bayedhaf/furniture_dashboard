@@ -2,7 +2,7 @@
 import {
   Home,
   UserPlus,
-  FileBarChart2,
+
   TrendingUp,
   ShoppingCart,
   Package,
@@ -14,7 +14,7 @@ import {
 export const items = [
   {
     title: "Home",
-    url: "/dashboard",
+    url: "/admin",
     icon: Home,
   },
   {
@@ -23,33 +23,28 @@ export const items = [
     icon: UserPlus,
   },
   {
-    title: "Manage Reports",
-    url: "/reports",
-    icon: FileBarChart2,
-  },
-  {
     title: "Sales Reports",
-    url: "/reports/sales",
+    url: "/admin/reports/sales",
     icon: TrendingUp,
   },
   {
     title: "Purchase Reports",
-    url: "/reports/purchases",
+    url: "/admin/reports/purchases",
     icon: ShoppingCart,
   },
   {
     title: "Orders Reports",
-    url: "/reports/orders",
+    url: "/admin/reports/orders",
     icon: Package,
   },
   {
     title: "Wages Reports",
-    url: "/reports/wages",
+    url: "/admin/reports/employeelist",
     icon: Wallet,
   },
   {
     title: "Operational Reports",
-    url: "/reports/operations",
+    url: "/admin/reports/operations",
     icon: Activity,
   },
   {

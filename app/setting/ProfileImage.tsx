@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export default function AvatarProfile() {
+const AvatarProfile: React.FC<{ className?: string }> = ({ className }) => {
   const [profileUrl, setProfileUrl] = useState<string | null>(null);
   const [name, setName] = useState<string>("");
 
@@ -30,7 +30,7 @@ export default function AvatarProfile() {
 
   return (
     <div className="flex items-center gap-4">
-      <Avatar className="h-20 w-20 border border-neutral-200 shadow-sm">
+      <Avatar className={className ? className : "h-20 w-20 border border-neutral-200 shadow-sm"}>
         {profileUrl ? (
           <AvatarImage
             src={profileUrl}
@@ -53,4 +53,6 @@ export default function AvatarProfile() {
       )}
     </div>
   );
-}
+};
+
+export default AvatarProfile;

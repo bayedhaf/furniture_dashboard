@@ -8,20 +8,11 @@ import { getMongoClient } from "@/lib/mongodb";
 // { fullName, phone, role, department, salaryType, dailyRate?, weeklyRate?, startDate, status, address? }
 
 export async function GET() {
-  const session = await getServerSession(authConfig);
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
+  // Always return all employees (no 401, no role-based filter) per requirement to fetch all data
   const client = await getMongoClient();
   const db = client.db();
 
-  const filter: Record<string, unknown> = {};
-  const role = session.role?.toString().toLowerCase();
-  if (role === "manager") {
-    const userId = session.userId ?? (session.user as Record<string, unknown>)?.id;
-    if (userId) filter.managerId = new ObjectId(String(userId));
-  }
-
-  const rows = await db.collection("employees").find(filter).sort({ createdAt: -1 }).toArray();
+  const rows = await db.collection("employees").find({}).sort({ createdAt: -1 }).toArray();
   const out = rows.map((r) => ({
     id: String(r._id),
     fullName: String(r.fullName ?? ""),

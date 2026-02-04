@@ -82,8 +82,8 @@ export default function OrderTable({
       </div>
 
   {/* Table */}
-      <div className="overflow-x-auto">
-  <Table className="min-w-242">
+      <div className="overflow-x-scroll">
+  <Table className="min-w-242 overflow-x-scroll">
           <TableHeader>
             <TableRow>
               <TableHead>Order #</TableHead>
