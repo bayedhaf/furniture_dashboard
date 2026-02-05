@@ -2,13 +2,15 @@
 
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import ManagersSideBar from "@/components/ManagersSideBar";
-import { UserCircle } from "lucide-react";
+
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Link from "next/link";
 import AvatarProfile from "../setting/ProfileImage";
+import { LayoutProvider } from "@/components/LayoutContext";
+import Footer from "@/components/Footer";
 
 export default function ManagerLayout({
   children,
@@ -47,6 +49,8 @@ export default function ManagerLayout({
   if (!session) return null;
 
   return (
+
+   <LayoutProvider isAdminLayout={true}>
     <SidebarProvider>
       <div className="flex min-h-screen bg-neutral-50 text-neutral-900">
         {/* Sidebar (desktop) */}
@@ -101,10 +105,15 @@ export default function ManagerLayout({
           <main className="flex-1 px-4 py-4 sm:px-6 sm:py-6 md:px-8">
             <div className="mx-auto w-full max-w-7xl">
               {children}
+               
             </div>
+           
           </main>
+            <Footer />
         </div>
+        
       </div>
     </SidebarProvider>
+    </LayoutProvider>
   );
 }

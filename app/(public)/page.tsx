@@ -52,13 +52,13 @@ export default function HomePage() {
 
   const testimonials = [
     {
-      name: "Sarah Johnson",
+      name: "Mr X",
       role: "Interior Designer",
       text: "The quality and craftsmanship exceeded all expectations. Highly recommended!",
       rating: 5
     },
     {
-      name: "Michael Chen",
+      name: "Eng. Mulu",
       role: "Office Manager",
       text: "Transformed our workspace completely. The furniture is both beautiful and functional.",
       rating: 5
@@ -419,7 +419,7 @@ export default function HomePage() {
           <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
               { value: "500+", label: "Happy Clients", icon: Users },
-              { value: "10+", label: "Years Experience", icon: Award },
+              { value: "15+", label: "Years Experience", icon: Award },
               { value: "24/7", label: "Support", icon: ShieldCheck },
               { value: "98%", label: "Satisfaction", icon: Heart },
             ].map(({ value, label, icon: Icon }, index) => (
@@ -460,7 +460,7 @@ export default function HomePage() {
               className="group relative overflow-hidden rounded-full bg-gradient-to-r from-[#007B7F] to-[#1B3A57] px-8 py-3 text-white font-semibold hover:shadow-2xl transition-all duration-300 hover-lift"
             >
               <span className="relative z-10 flex items-center justify-center gap-2">
-                Start Your Project
+               Buy Our Products
                 <ChevronRight className="h-4 w-4 group-hover:translate-x-2 transition-transform duration-300" />
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-[#1B3A57] to-[#007B7F] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -471,65 +471,13 @@ export default function HomePage() {
               className="group rounded-full border-2 border-[#007B7F] px-8 py-3 font-semibold text-[#007B7F] hover:bg-[#007B7F] hover:text-white transition-all duration-300 hover-lift flex items-center justify-center gap-2"
             >
               <Phone className="h-4 w-4 group-hover:rotate-12 transition-transform duration-300" />
-              Call Now: (123) 456-7890
+              Call Now: (+251) 456-7890
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ================= Footer ================= */}
-      <footer className="bg-gradient-to-b from-[#1B3A57] to-[#0A1E2F] text-white py-12">
-        <div className="mx-auto max-w-7xl px-6">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#007B7F] to-[#FFD166] flex items-center justify-center text-white font-bold">
-                  A
-                </div>
-                <div className="text-xl font-bold text-white">A.W.G Furniture</div>
-              </div>
-              <p className="text-white/70">Crafting beautiful spaces since 2010</p>
-            </div>
-
-            {['Quick Links', 'Services', 'Contact Info'].map((title, idx) => (
-              <div key={title}>
-                <h3 className="font-bold text-white mb-4">{title}</h3>
-                <ul className="space-y-2">
-                  {['Home', 'Products', 'Office Solutions', 'Contact Us'].map((link, linkIdx) => (
-                    <li key={link}>
-                      <Link
-                        href="#"
-                        className="text-white/70 hover:text-white transition-colors duration-300 flex items-center gap-2 group"
-                      >
-                        <ChevronRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        {link}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/10">
-            <div className="text-white/50 text-sm mb-4 md:mb-0">
-              © 2024 A.W.G Furniture. All rights reserved.
-            </div>
-
-            <div className="flex gap-4">
-              {['Instagram', 'Facebook', 'Twitter', 'LinkedIn'].map((social) => (
-                <a
-                  key={social}
-                  href="#"
-                  className="text-white/70 hover:text-white transition-colors duration-300 hover:scale-110"
-                >
-                  {social}
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-      </footer>
+     
     </div>
   )
 }

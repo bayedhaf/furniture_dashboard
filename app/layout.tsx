@@ -1,11 +1,8 @@
+
 import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "@/components/Providers";
-import Footer from "@/components/Footer";
 
-// Local font variables (no network fetch)
-const geistSans = { variable: "--font-geist-sans" } as const;
-const geistMono = { variable: "--font-geist-mono" } as const;
 
 export const metadata: Metadata = {
   title: {
@@ -92,18 +89,16 @@ export const metadata: Metadata = {
   },
 
   manifest: "/site.webmanifest",
-};
-
-export default function RootLayout({
+};export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-neutral-50 text-neutral-900`}
-      >
-        <Providers>{children}</Providers>
-        <Footer />
+      <body className="antialiased bg-neutral-50 text-neutral-900">
+        <Providers>
+          {/* Only render children, Footer is now in page/layout components */}
+          {children}
+        </Providers>
       </body>
     </html>
   );
